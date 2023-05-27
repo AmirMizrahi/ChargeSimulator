@@ -3,22 +3,25 @@ package chargeit.chargesimulator;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-public class Simulator {
+public class ChargingStation {
     // Simulate charging process for a given vehicle
     // 252 sec charging 1% average
     private static final int SEC_FOR_ONE_PERCENT = 1;
     public int HowMuchPercentTheStationCharge = 0;
     public boolean isCharging=false;
-    public ElectricCar car;
+   // public ElectricCar car;
+   private String id;
 
-    public Simulator(ElectricCar _car)
+
+    public ChargingStation(String i_ID)
     {
-        car = _car;
+        id=i_ID;
     }
 
     public void chargeVehicle(ElectricCar vehicle) {
 
         System.out.println("Charging vehicle " + vehicle.getId());
+        System.out.println("The Station: " + this.id +" Is charge");
         isCharging = true;
         vehicle.startCharging();
         try {
@@ -50,7 +53,7 @@ public class Simulator {
     public void StopCharging()
     {
         isCharging = false;
-        this.car.stopCharging();
+        //this.car.stopCharging();
 
     }
 
