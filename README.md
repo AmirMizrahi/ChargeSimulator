@@ -1,3 +1,7 @@
+<p align="center">
+    <img width="50%" src="./src/main/resources/images/chargingStations.jpg">
+</p>
+
 # Charging Station Simulator
 
 The Charging Station Simulator is a server-side application that emulates the charging process for electric vehicles. It is specifically designed to be used by the server, enabling it to simulate the charging experience without requiring any user interaction.
