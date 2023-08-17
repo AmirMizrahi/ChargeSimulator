@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Charging Stations</title>
+</head>
+<body>
+<h1>Charging Stations</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Charging Station ID</th>
+        <th>Final Percentage</th>
+        <th>Charging Status</th>
+    </tr>
+    </thead>
+    <tbody id="chargingStationsTableBody">
+    <!-- Charging station data will be inserted here dynamically -->
+    </tbody>
+</table>
+
+<script>
+    // Function to fetch charging station data and populate the table
+    async function fetchChargingStations() {
+        const response = await fetch('/simulator/allChargingStations');
+        const chargingStations = await response.json();
+
+        const tableBody = document.getElementById('chargingStationsTableBody');
+        tableBody.innerHTML = ''; // Clear the table body
+
+        chargingStations.forEach(station => {
+            const row = tableBody.insertRow();
+            const idCell = row.insertCell();
+            const percentageCell = row.insertCell();
+            const statusCell = row.insertCell();
+
+            idCell.textContent = station.chargingStationId;
+            percentageCell.textContent = station.finalPercentage + '%';
+            statusCell.textContent = station.charging ? 'Charging' : 'Not Charging';
+        });
+    }
+
+    // Fetch charging station data when the page loads
+    fetchChargingStations();
+</script>
+</body>
+</html>
