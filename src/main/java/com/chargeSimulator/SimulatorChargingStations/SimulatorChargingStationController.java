@@ -127,6 +127,12 @@ public class SimulatorChargingStationController {
                 .body(jsonObject.toString());
     }
 
+    // Helper method to generate a random initial percentage for charging.
+    private int getRandomInitialPercentage() {
+        Random random = new Random();
+        return random.nextInt(SimulatorConfig.HIGH_PERCENT - SimulatorConfig.LOW_PERCENT + 1) + SimulatorConfig.LOW_PERCENT;
+    }
+
     @PutMapping("/unCharge")
     public ResponseEntity<String> unCharge(@RequestParam("chargingStationId") String chargingStationId) {
         HttpStatus httpStatus = HttpStatus.OK;
@@ -142,12 +148,6 @@ public class SimulatorChargingStationController {
         return ResponseEntity.status(httpStatus)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(jsonObject.toString());
-    }
-
-    // Helper method to generate a random initial percentage for charging.
-    private int getRandomInitialPercentage() {
-        Random random = new Random();
-        return random.nextInt(SimulatorConfig.HIGH_PERCENT - SimulatorConfig.LOW_PERCENT + 1) + SimulatorConfig.LOW_PERCENT;
     }
 
     @GetMapping("/allChargingStations")
