@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Charging Stations</title>
+    <title>Charging Simulator</title>
 </head>
 <body>
-<h1>Charging Stations</h1>
+<h1>Charging Simulator Stations:</h1>
 <table>
     <thead>
     <tr>
+        <th>#</th>
         <th>Charging Station ID</th>
+        <th>Charging Station Name</th>
         <th>Final Percentage</th>
         <th>Charging Status</th>
     </tr>
@@ -23,19 +25,33 @@
     async function fetchChargingStations() {
         const response = await fetch('/simulator/allChargingStations');
         const chargingStations = await response.json();
+        let i = 1;
 
         const tableBody = document.getElementById('chargingStationsTableBody');
         tableBody.innerHTML = ''; // Clear the table body
 
         chargingStations.forEach(station => {
             const row = tableBody.insertRow();
+            const sid = row.insertCell();
             const idCell = row.insertCell();
+            const name = row.insertCell();
             const percentageCell = row.insertCell();
             const statusCell = row.insertCell();
 
+            sid.textContent = i++;
             idCell.textContent = station.chargingStationId;
+            name.textContent = station.name;
             percentageCell.textContent = station.finalPercentage + '%';
             statusCell.textContent = station.charging ? 'Charging' : 'Not Charging';
+
+            // Colors logic;
+            if (station.finalPercentage >= 0 && station.finalPercentage <= 25) {
+                percentageCell.style.color = 'red';
+            } else if (station.finalPercentage >= 26 && station.finalPercentage <= 75) {
+                percentageCell.style.color = 'yellow';
+            } else if (station.finalPercentage >= 76 && station.finalPercentage <= 100) {
+                percentageCell.style.color = 'green';
+            }
         });
     }
 

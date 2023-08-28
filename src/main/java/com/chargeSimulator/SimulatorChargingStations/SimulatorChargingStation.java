@@ -5,13 +5,15 @@ public class SimulatorChargingStation {
     private int finalPercentage;
     private boolean isCharging;
    private String id;
+   private String name;
 
 
-    public SimulatorChargingStation(String id)
+    public SimulatorChargingStation(String id, String name)
     {
         this.id = id;
         this.isCharging = false;
         this.initialPercentage = 0;
+        this.name = name;
     }
 
     public int getInitialPercentage() {
@@ -30,6 +32,10 @@ public class SimulatorChargingStation {
         return finalPercentage;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void setInitialPercentage(int initialPercentage) {
         this.setFinalPercentage(initialPercentage);
         this.initialPercentage = initialPercentage;
@@ -41,5 +47,9 @@ public class SimulatorChargingStation {
 
     public void setFinalPercentage(int finalPercentage) {
         this.finalPercentage = finalPercentage;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

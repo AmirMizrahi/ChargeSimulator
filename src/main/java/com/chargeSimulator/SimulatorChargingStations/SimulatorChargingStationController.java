@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -16,7 +17,7 @@ import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@RestController
+@Controller
 @RequestMapping("/simulator")
 public class SimulatorChargingStationController {
     @Autowired
@@ -36,7 +37,7 @@ public class SimulatorChargingStationController {
 
         // Create SimulatorChargingStation instances from existing ChargingStation entities
         for (ChargingStation chargingStation : chargingStationsFromDB) {
-            SimulatorChargingStation simulatorChargingStation = new SimulatorChargingStation(chargingStation.getId().toString());
+            SimulatorChargingStation simulatorChargingStation = new SimulatorChargingStation(chargingStation.getId().toString(), chargingStation.getStationName());
             chargingStations.put(simulatorChargingStation.getId(), simulatorChargingStation);
 
             logger.info("Charging station created with ID: {}", simulatorChargingStation.getId());
@@ -70,7 +71,7 @@ public class SimulatorChargingStationController {
         HttpStatus httpStatus = HttpStatus.OK;
         JsonObject jsonObject = new JsonObject();
 
-        chargingStations.put(chargingStationId, new SimulatorChargingStation(chargingStationId));
+        chargingStations.put(chargingStationId, new SimulatorChargingStation(chargingStationId, "new!"));
 
         logger.info("Charging station created with ID: {}", chargingStationId);
 
@@ -156,6 +157,7 @@ public class SimulatorChargingStationController {
 
         for (SimulatorChargingStation simulatorChargingStation : chargingStations.values()) {
             ChargingStationInfo chargingStationInfo = new ChargingStationInfo();
+            chargingStationInfo.setName(simulatorChargingStation.getName());
             chargingStationInfo.setChargingStationId(simulatorChargingStation.getId());
             chargingStationInfo.setFinalPercentage(simulatorChargingStation.getFinalPercentage());
             chargingStationInfo.setCharging(simulatorChargingStation.isCharging());
@@ -165,13 +167,18 @@ public class SimulatorChargingStationController {
         return ResponseEntity.ok(chargingStationInfos);
     }
 
+    @RequestMapping("/")
+    public String dashboard() {
+        return "charging_stations"; // This corresponds to the template name (without ".html" extension)
+    }
+
     // Helper class for charging station information
     class ChargingStationInfo {
         private String chargingStationId;
+        private String name;
         private int finalPercentage;
         private boolean charging;
 
-        // Getters and Setters...
 
         public String getChargingStationId() {
             return chargingStationId;
@@ -179,6 +186,14 @@ public class SimulatorChargingStationController {
 
         public void setChargingStationId(String chargingStationId) {
             this.chargingStationId = chargingStationId;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
         }
 
         public int getFinalPercentage() {
